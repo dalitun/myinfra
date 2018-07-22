@@ -11,13 +11,15 @@ Environment=CATALINA_PID=/opt/tomcat/temp/tomcat.pid
 Environment=CATALINA_HOME=/opt/tomcat
 Environment=CATALINA_BASE=/opt/tomcat
 Environment='CATALINA_OPTS={{ catalina_option }}'
-Environment='JAVA_OPTS={{ java_options }}'
+Environment='JAVA_OPTS={{ java_option }}'
 
 ExecStart=/opt/tomcat/bin/startup.sh
 ExecStop=/bin/kill -15 $MAINPID
 
 User=tomcat
 Group=tomcat
-
+UMask=0007
+RestartSec=10
+Restart=always
 [Install]
 WantedBy=multi-user.target

@@ -7,8 +7,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # Create repertoire VM master1
     ############################################################
     config.vm.define "master1" do |master1|
-        master1.vm.box = "centos"
-        master1.vm.box_url ="file://centos-7-x86_64.box"
+        #master1.vm.box = "centos"
+        #master1.vm.box_url ="file://centos-7-x86_64.box"
+        master1.vm.box = "centos/7"
 
 
         master1.vm.hostname = "master1"

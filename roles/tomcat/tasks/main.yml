@@ -3,7 +3,7 @@
   group: name=tomcat
 
 - name: Add user "tomcat"
-  user: name=tomcat group=tomcat home=/usr/share/tomcat createhome=no
+  user: name=tomcat group=tomcat home=/usr/share/tomcat shell=/bin/nologin createhome=no
   sudo: True
 
 - name: Download Tomcat
@@ -14,16 +14,17 @@
 
 
 - name: Extract archive
-  shell: /bin/tar xvfz /opt/apache-tomcat-{{ release }}.tar.gz -C /opt/tomcat --strip 1
+  shell: /bin/tar xvfz /opt/apache-tomcat-{{ version }}.tar.gz -C /opt/tomcat --strip 1
 
-- name: Purge tomcat webapps
-  file: path=/opt/tomcat/webapps/{{ item }} state=absent
-  with_items:
-          - ROOT
-          - docs
-          - examples
-#-name: add permission for /opt/tomcat
-#  shell: chown -R tomcat:tomcat /opt/tomcat
+#- name: Purge tomcat webapps
+#  file: path=/opt/tomcat/webapps/{{ item }} state=absent
+#  with_items:
+#          - ROOT
+#          - docs
+#          - examples
+
+- name: add permission for /opt/tomcat
+  file: path=/opt/tomcat state=directory owner=tomcat group=tomcat mode=0755 recurse=yes
 
 - name: Symlink install directory
   file: src=/opt/tomcat path=/usr/share/tomcat owner=tomcat group=tomcat state=link
@@ -34,6 +35,19 @@
 - name: Configure Tomcat users
   template: src=tomcat-users.xml.j2 dest=/usr/share/tomcat/conf/tomcat-users.xml
 
+- name: Configure context.xml host-manager
+  copy:
+     src=files/context.xml
+     dest=/opt/tomcat/webapps/host-manager/META-INF/context.xml
+     owner=tomcat
+     group=tomcat
+
+- name: Configure context.xml manager
+  copy:
+     src=files/context.xml
+     dest=/opt/tomcat/webapps/manager/META-INF/context.xml
+     owner=tomcat
+     group=tomcat
 
 - name: Install Tomcat init script
   template: src=tomcat.service.j2 dest=/etc/systemd/system/tomcat.service mode=0755
