@@ -1,0 +1,11 @@
+tomcat_major: 8
+version: 8.5.32
+tarball_url: http://www-eu.apache.org/dist/tomcat/tomcat-{{ version }}/v{{ release }}/bin/apache-tomcat-{{ release }}.tar.gz
+user: admin
+password: admin
+http_port: 8080
+ajp_port: 8009
+http_connection_timeout: 20000
+java_home: /usr/lib/jvm/java
+catalina_option: '-Xms512M -Xmx1024M -server -XX:+UseParallelGC'
+java_option: '-Djava.awt.headless=true -Djava.security.egd=file:/dev/./urandom'

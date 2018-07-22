@@ -1,0 +1,15 @@
+---
+
+- name: Install openjdk
+  yum: name=java-1.{{jdk_version }}.0-openjdk state=present
+  when: jdk_version == 8
+
+- name: Symlink java
+  file: src=/usr/lib/jvm/jre-openjdk path={{ java_home }} state=link
+
+- name: Add JAVA_PATH in (/etc/profile)
+  blockinfile:
+     path: /etc/profile
+     block: |
+          JAVA_HOME={{ java_home }}
+          PATH=$PATH:$HOME/bin:$JAVA_HOME/bin
