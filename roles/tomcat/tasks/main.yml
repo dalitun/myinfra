@@ -3,49 +3,49 @@
   group: name=tomcat
 
 - name: Add user "tomcat"
-  user: name=tomcat group=tomcat home=/usr/share/tomcat shell=/bin/nologin createhome=no
+  user: name=tomcat group=tomcat home={{ home_dir }} shell=/bin/nologin createhome=no
   sudo: True
 
 - name: Download Tomcat
   get_url: url={{tarball_url}}  dest=/opt
 
-- name: Create /opt/tomcat folder
-  file: path=/opt/tomcat state=directory mode=0755 owner=tomcat group=tomcat recurse=yes
+- name: Create {{ base_dir }}folder
+  file: path={{ base_dir }} state=directory mode=0755 owner=tomcat group=tomcat recurse=yes
 
 
 - name: Extract archive
-  shell: /bin/tar xvfz /opt/apache-tomcat-{{ version }}.tar.gz -C /opt/tomcat --strip 1
+  shell: /bin/tar xvfz /apache-tomcat-{{ version }}.tar.gz -C {{ base_dir }} --strip 1
 
 #- name: Purge tomcat webapps
-#  file: path=/opt/tomcat/webapps/{{ item }} state=absent
+#  file: path={{ base_dir }}/webapps/{{ item }} state=absent
 #  with_items:
 #          - ROOT
 #          - docs
 #          - examples
 
-- name: add permission for /opt/tomcat
-  file: path=/opt/tomcat state=directory owner=tomcat group=tomcat mode=0755 recurse=yes
+- name: add permission for {{ base_dir }}
+  file: path={{ base_dir }} state=directory owner=tomcat group=tomcat mode=0755 recurse=yes
 
 - name: Symlink install directory
-  file: src=/opt/tomcat path=/usr/share/tomcat owner=tomcat group=tomcat state=link
+  file: src={{ base_dir }} path={{ home_dir }} owner=tomcat group=tomcat state=link
 
 - name: Config Tomcat
-  template: src=server.xml.j2 dest=/usr/share/tomcat/conf/server.xml
+  template: src=server.xml.j2 dest={{ home_dir }}/conf/server.xml
 
 - name: Configure Tomcat users
-  template: src=tomcat-users.xml.j2 dest=/usr/share/tomcat/conf/tomcat-users.xml
+  template: src=tomcat-users.xml.j2 dest={{ home_dir }}/conf/tomcat-users.xml
 
 - name: Configure context.xml host-manager
   copy:
      src=files/context.xml
-     dest=/opt/tomcat/webapps/host-manager/META-INF/context.xml
+     dest={{ base_dir }}/webapps/host-manager/META-INF/context.xml
      owner=tomcat
      group=tomcat
 
 - name: Configure context.xml manager
   copy:
      src=files/context.xml
-     dest=/opt/tomcat/webapps/manager/META-INF/context.xml
+     dest={{ base_dir }}/webapps/manager/META-INF/context.xml
      owner=tomcat
      group=tomcat
 

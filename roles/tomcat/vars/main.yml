@@ -1,6 +1,8 @@
 tomcat_major: 8
 version: 8.5.32
 tarball_url: http://www-eu.apache.org/dist/tomcat/tomcat-{{ tomcat_major }}/v{{ version }}/bin/apache-tomcat-{{version }}.tar.gz
+base_dir: /opt/tomcat
+home_dir: /usr/share/tomcat
 user: admin
 password: admin
 http_port: 8080
