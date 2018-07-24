@@ -14,14 +14,17 @@
 
 
 - name: Extract archive
-  shell: /bin/tar xvfz /apache-tomcat-{{ version }}.tar.gz -C {{ base_dir }} --strip 1
+  shell: tar xvfz /opt/apache-tomcat-{{ version }}.tar.gz -C {{ base_dir }} --strip 1
 
-#- name: Purge tomcat webapps
-#  file: path={{ base_dir }}/webapps/{{ item }} state=absent
-#  with_items:
-#          - ROOT
-#          - docs
-#          - examples
+- name: Removing existing tomcat tarball
+  file: path=/opt/apache-tomcat-{{ version }}.tar.gz state=absent
+
+- name: Purge tomcat webapps
+  file: path={{ base_dir }}/webapps/{{ item }} state=absent
+  with_items:
+          - ROOT
+          - docs
+          - examples
 
 - name: add permission for {{ base_dir }}
   file: path={{ base_dir }} state=directory owner=tomcat group=tomcat mode=0755 recurse=yes

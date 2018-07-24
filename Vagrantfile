@@ -15,6 +15,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         master1.vm.hostname = "master1"
         #master1.vm.network :private_network, ip: "10.0.1.2"
         master1.vm.network "public_network"
+        #master1.vm.network :private_network,type: "dhcp"
+        master1.proxy.http     = "http://10.120.1.1:8080"
+        master1.proxy.https    = "http://10.120.1.1:8080"
         master1.vm.provider :virtualbox do |vb|
           vb.customize ["modifyvm", :id, "--memory", "1024"]
           vb.customize ["modifyvm", :id, "--cpus", "1"]

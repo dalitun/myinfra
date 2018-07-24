@@ -1,7 +1,7 @@
 ---
 
 - name: Install openjdk
-  yum: name=java-1.{{jdk_version }}.0-openjdk state=present
+  yum: name=java-1.{{jdk_version }}.0-openjdk-devel state=present
   when: jdk_version == 8
 
 - name: Symlink java
