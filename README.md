@@ -1,5 +1,5 @@
 # tomcat
 
-~~bash
+~~~bash
 $ vagrant up
-~~
+~~~
