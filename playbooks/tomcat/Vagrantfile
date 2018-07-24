@@ -12,7 +12,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         master1.vm.box = "centos/7"
 
 
-        master1.vm.hostname = "master1"
+        master1.vm.hostname = "Tomcat"
         #master1.vm.network :private_network, ip: "10.0.1.2"
         master1.vm.network "public_network"
         #master1.vm.network :private_network,type: "dhcp"
@@ -24,7 +24,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         end
 
       config.vm.provision "ansible" do |ansible|
-      ansible.playbook = "deploy_nodes.yml"
+      ansible.playbook = "tomcat.yml"
+      ansible.galaxy_roles_path = "../../roles"
       #ansible.extra_vars = "group_vars/db1.yml"
 
       end
